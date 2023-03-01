@@ -104,7 +104,7 @@ int restore_int_key(void *key);
 int upo_graph_create_node(upo_graph_t graph);
 
 //typedef void* (*key_generator)();
-//key_generator gen = upo_graph_create_node;///////////////
+//key_generator gen = upo_graph_create_node;
 
 upo_graph_t upo_create_graph(size_t size, void* get_key(), int key_compare(void *, void *), int key_restore(void* key), graph_type_e type);
 
