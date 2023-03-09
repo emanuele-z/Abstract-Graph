@@ -6,36 +6,10 @@
 #include "traversal.h"
 #endif
 
-upo_traversal_support_structure_t upo_traversal_create_support_structure(upo_traversal_node_t traversal_head, upo_traversal_node_t peek(upo_traversal_t), upo_traversal_node_t retrieve(upo_traversal_t), void* insert(upo_traversal_t, upo_traversal_node_t))
+upo_traversal_support_structure_t upo_traversal_create_support_structure(upo_traversal_node_t peek(upo_traversal_t), upo_traversal_node_t retrieve(upo_traversal_t), void* insert(upo_traversal_t, upo_traversal_node_t))
 {
-	
-	/// NO, creare VUOTO
-	
-	upo_traversal_support_structure_node_t support_struct_head;
-	
-	if(traversal_head != NULL)
-	{
-		support_struct_head = malloc(sizeof(struct upo_traversal_support_structure_node_s));
-		support_struct_head->node = traversal_head;
-		support_struct_head->next = NULL;
-		
-		upo_traversal_node_t node = traversal_head->next; // Starting from the second element of the list
-	
-		while(node != NULL)
-		{
-			
-			node = node->next;
-		}
-	}
-	else
-	{
-		
-	}
-	
-	
-	
 	upo_traversal_support_structure_t support_structure = malloc(sizeof(struct upo_traversal_support_structure_s));
-	
+	support_structure->head = NULL;
 	support_structure->peek = peek;
 	support_structure->retrieve = retrieve;
 	support_structure->insert = insert;
@@ -45,27 +19,51 @@ upo_traversal_support_structure_t upo_traversal_create_support_structure(upo_tra
 
 upo_traversal_t create_traversal(upo_graph_t graph, void* visit(upo_traversal_t, void *), void* peek(upo_traversal_t), void* retrieve(upo_traversal_t), void* insert(upo_traversal_t, upo_traversal_node_t))
 {
-
-	struct upo_traversal_node *head;
-	
 	upo_traversal_t traversal = malloc(sizeof(struct upo_traversal_s));
-	
-	traversal->visit = visit;
-	
-	
+	traversal->nodes = malloc(sizeof(struct upo_traversal_node_list_s));
 	
 	traversal->support_structure = upo_traversal_create_support_structure(peek, retrieve, insert);
 	
-	upo_traversal_support_structure_t support_structure;
+	if(traversal->support_structure == NULL)
+	{
+		retrun NULL;
+	}
+
+	upo_traversal_node_t head, traversal_list;
 	
+	upo_graph_node_list_node_t graph_list = graph->nodes->head;
 	
-	void* node = graph->nodes->head;
-	return NULL;
+	if(graph_list != NULL)
+	{
+		traversal_list = head = malloc(sizeof(struct upo_traversal_node));
+		traversal_list->graph_node = graph_list->element; // !
+		traversal_list->status = WHITE; // !
+		traversal_list = traversal_list->next;
+		graph_list = graph_list->next;
+	}
+	else
+	{
+		head = NULL;
+	}
+	
+	while(graph_list != NULL)
+	{
+		traversal_list = malloc(sizeof(struct upo_traversal_node));
+		traversal_list->graph_node = graph_list->element; // !
+		traversal_list->status = WHITE; // !
+		traversal_list = traversal_list->next;
+		graph_list = graph_list->next;
+	}
+	
+	traversal->nodes->head = head;
+	traversal->visit = visit;
+	
+	return traversal;
 }
 
 void* visit_dijkstra(upo_traversal_t node, void* params)
 {
-	/* do stuff */
+
 }
 
 upo_traversal_node_t upo_traversal_peek_queue(upo_traversal_t traversal)

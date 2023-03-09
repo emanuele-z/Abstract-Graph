@@ -36,9 +36,18 @@ struct upo_traversal_support_structure_s
 
 typedef upo_traversal_support_structure_s* upo_traversal_support_structure_t;
 
-struct upo_traversal_s
+
+struct upo_traversal_node_list_s
 {
 	struct upo_traversal_node *head;
+	size_t size;
+};
+
+typedef struct upo_traversal_node_list_s* upo_traversal_node_list_t;
+
+struct upo_traversal_s
+{
+	struct upo_traversal_node_list_s *nodes;
 	void* (*visit)(upo_traversal_t, void *);
 	upo_traversal_support_structure_t support_structure;
 	/* details: is_finished, ... */
